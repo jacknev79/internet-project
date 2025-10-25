@@ -8,6 +8,9 @@ class Packet():
         self._address = address
         self.sender = sender
         self.content = content
+        self.length = 1
+
+        self._order = 1
         self.path = Queue()
 
     def __str__(self):
@@ -27,9 +30,28 @@ class Packet():
     
     def getAddress(self):
         return self._address 
+    
+    def getOrder(self):
+        return self._order
+    
+    def setOrder(self, new):
+        if type(new) is not int:
+            raise TypeError()
+        
+        self._order = new
+
+    def getLength(self):
+        return self._order
+    
+    def setLength(self, new):
+        if type(new) is not int:
+            raise TypeError()
+        
+        self._length = new
 
     def dropPacket(self):
         print(f'This packet from {self.sender} has been dropped. Content of packet: {self.content}')
 
     address = property(getAddress)
-    
+    order = property(getOrder, setOrder)
+    length = property(getLength, setLength)

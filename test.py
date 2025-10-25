@@ -35,6 +35,23 @@ def generateMacAddress():
     macAddress = macAddress.strip(':')
     return macAddress
 
+def createPackets(sender, destination, message, n):
+    '''
+    Splits up a given message into one or many packets with max content size n.
+    If split into multiple packets they are assigned an order.
+    Sender is the client host that is sending the packet(s) to destination.
+    Packets are added to sender queue and can be sent using .send method.
+    '''
+    strings = [message[i:i+n] for i in range(len(0,message, n))]
+    order = 1
+    for string in strings:
+        packet = Packet(sender.ipAddress, destination.ipAddress, string)
+        packet.order = order
+        sender.readyPacket(packet)
+
+        order += 1
+        #nb must add 'create path' functionality.. maybe need routing table?
+
 
 clientAAddress = generateIPAddress()
 clientBAddress = generateIPAddress()
@@ -79,7 +96,7 @@ clientA.readyPacket(packet1)
 clientA.readyPacket(packet3)
 clientB.readyPacket(packet2)
 clientA.connectToRouter(routerA)
-clientB.connectToRouter(routerA)
+#clientB.connectToRouter(routerA)
 clientB.connectToRouter(routerB)
 #clientA.connectToRouter(routerB)
 

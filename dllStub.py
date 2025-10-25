@@ -2,6 +2,7 @@
 
 
 For CS2515 labs on DoublyLinked Lists
+Comments provided with permission by Prof. Ken Brown
 
 Stub file - specifies method signatures, but the method bodies need to be completed.
 
@@ -160,74 +161,3 @@ class DLL:
                 next_node = next_node.next
 
         return item
-
-#---------- Helper Methods ------------------------------#
-           
-
-    def add_node_after(self, newnode, nodebefore):
-        """ Add a node after the specified DLLNode.
-
-        If you have used the dummy head / tail implementation, this can be
-        simply called by add_first(...) and add_last(...)
-
-        Args:
-            newnode: a DLL node to be added after the DLLNode nodebefore
-            nodebefore: an existing DLLNode in this list        
-        """
-
-
-
-
-
-
-
-
-# ----------- End of class definition for DLL --------------------- #
-
-
-
-
-
-def test():
-    """ Test the implementation. """
-    mylist = DLL()
-    mylist.add_first('d')
-    mylist.add_last('e')
-    mylist.add_last('x')
-    print('mylist (should be d-e-x) =', mylist)
-    print('length (should be 3) =', mylist.length())
-    print('first (should be d) ', mylist.get_first())
-    print('last (should be x) =', mylist.get_last())
-    mylist.add_first('c')
-    print('mylist (should be c-d-e-x) =', mylist)
-    print('length =', mylist.length())
-    mylist.remove_last()
-    print('mylist (should be c-d-e) =', mylist)
-    mylist.add_first('b')
-    print('mylist (should be b-c-d-e) =', mylist)
-    mylist.add_last('f')
-    print('mylist (should be b-c-d-e-f) =', mylist)
-    mylist.add_first('a')
-    print('mylist (should be a-b-c-d-e-f) =', mylist)
-    mylist.add_first('y')
-    print('mylist (should be y-a-b-c-d-e-f) =', mylist)
-    mylist.remove_first()
-    print('mylist (should be a-b-c-d-e-f) =', mylist)
-    mylist.remove_first()
-    mylist.remove_first()
-    mylist.remove_first()
-    mylist.remove_first()
-    mylist.remove_first()
-    mylist.remove_first()
-    print('length (should be 0)=', mylist.length())
-    print('first (should be None) =', mylist.get_first())
-    print('last (should be None) =', mylist.get_last())
-    print('tried removing last (should be None) =', mylist.remove_last())
-    print('tried removing first (should be None) =', mylist.remove_first())
-    print('mylist (should be empty) =', mylist)
-
-
-if __name__ == '__main__':
-    test()
-                
- 

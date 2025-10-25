@@ -1,9 +1,11 @@
 from queuell import Queue
+from packet import Packet
 class Client():
     def __init__(self, name, ipAddress):
         self.name = name
         self.packets = Queue()
         self._ipAddress = ipAddress
+        self.buffer = []
 
     def __str__(self):
         return '' + self.name
@@ -23,7 +25,11 @@ class Client():
     def receive(self, packet):
         print('Received by: ', self.name)
         print('sent to', packet.address, 'send by:',packet.sender)
-        print(packet.content)
+        if type(packet) is not Packet:
+            raise TypeError()
+        self.buffer.append(packet)
+        #nb add client/ router ports?
+        #each client maintains a separate list which acts as port?
 
     def connectToRouter(self, router):
         '''
@@ -32,7 +38,16 @@ class Client():
         lst = [self._ipAddress, self]
         router.clients.append(lst)
 
+    def display(self):
+        '''
+        displays the whole message, in correct order if it was broken into multiple packets
+        '''
+        self.buffer.sort(key = lambda x: x.order, reverse= False) 
+        message = ''
+        for packet in self.buffer:
+                message += packet.content
 
+        print(message)
 
     @property
     def ipAddress(self):
