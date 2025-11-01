@@ -47,10 +47,13 @@ def createPackets(sender, destination, message, n):
     for string in strings:
         packet = Packet(sender.ipAddress, destination.ipAddress, string)
         packet.order = order
+        packet.length = len(strings)
         sender.readyPacket(packet)
 
         order += 1
         #nb must add 'create path' functionality.. maybe need routing table?
+
+
 
 
 clientAAddress = generateIPAddress()
@@ -61,49 +64,47 @@ switch1MacAddress = generateMacAddress()
 switch2MacAddress = generateMacAddress()
 switch1 = Switch(switch1MacAddress)
 switch2 = Switch(switch2MacAddress)
+
+
 switch1.connectToSwitch(switch2)
-switch2.connectToSwitch(switch1)
-
-
+#switch2.connectToSwitch(switch1)
 
 routerA = Router()
 routerB = Router()
+routerC = Router()
+routerD = Router()
 routerA.connectToSwitch(switch2)
 routerB.connectToSwitch(switch1)
-switch1.connectToRouter(routerA)
-switch2.connectToRouter(routerB)
+routerC.connectToSwitch(switch2)
+routerD.connectToSwitch(switch1)
 
 
-
-
-
-
-
-#nb must add more routers into network (multiple routers should connect to each switch)
+#nb must add more routers into network (multiple routers should connect to each switch?)
 
 
 packet1 = Packet(clientBAddress, clientAAddress, 'This is packet 1 from client A to client B')
-path = [routerA, routerB, routerA]
+path = [routerD, routerB, routerD]
 packet1.create_path(path)
 packet2 = Packet(clientAAddress, clientBAddress, 'This is packet 2 from client B to client A')
-path = [routerB, routerA]
+path = [routerB, routerA, routerD, routerC]
 packet2.create_path(path)
 packet3 = Packet(clientBAddress, clientAAddress, 'This is packet 3 from client A to client B')
-path = [routerB, routerA, routerB, routerA, routerB]
+path = [routerB, routerA, routerC, routerA, routerB]
 packet3.create_path(path)
 
 clientA.readyPacket(packet1)
 clientA.readyPacket(packet3)
 clientB.readyPacket(packet2)
-clientA.connectToRouter(routerA)
+clientA.connectToRouter(routerD)
 #clientB.connectToRouter(routerA)
 clientB.connectToRouter(routerB)
-#clientA.connectToRouter(routerB)
+clientA.connectToRouter(routerB)
 
-clientA.send(routerA)
-clientA.send(routerB)
-clientB.send(routerB)
-while clientA.packets.length() > 0 or clientB.packets.length() > 0 or routerA.numPackets() > 0 or routerB.numPackets() > 0:
+clientA.send()
+clientA.send()
+clientB.send()
+
+while clientA.packets.length() > 0 or clientB.packets.length() > 0 or routerA.numPackets() > 0 or routerB.numPackets() > 0 or routerC.numPackets() > 0 or routerD.numPackets() > 0:
     #print('got here')
     if routerA.numPackets() > 0:
 
@@ -111,4 +112,10 @@ while clientA.packets.length() > 0 or clientB.packets.length() > 0 or routerA.nu
     if routerB.numPackets() > 0:
 
         routerB.process()
+    if routerC.numPackets() > 0:
+
+        routerC.process()
+    if routerD.numPackets() > 0:
+
+        routerD.process()
     #print('got here now')

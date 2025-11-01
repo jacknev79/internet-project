@@ -37,10 +37,31 @@ class Switch(Router):
         next_router = packet.path.dequeue()
         if next_router in self.network:
             next_router.addQueue(packet)
+            #print('got here')
+
+        elif packet.lifespan > 0:
+            packet.path.enqueue(next_router)
+            self.network[0].send(packet)
         else:
             print('router not in network')
             packet.dropPacket()
 
 
     def send(self, packet):
+        packet.lifespan -= 1
         self.network[0].receive(packet)
+
+    def connectToSwitch(self, object):
+        '''
+        takes in switch object as arg
+        you must run this method manually before adding any router objects.
+        automatically connects switch object to the calling object.
+        '''
+        #object.network.append(self)
+        self.network.append(object)
+
+        if type(object) == Switch and type(self) == Switch and len(object.network) == 0:
+            object.connectToSwitch(self)
+
+        elif type(object) == Switch:
+            object.connectToRouter(self)

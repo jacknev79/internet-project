@@ -9,18 +9,22 @@ class Packet():
         self.sender = sender
         self.content = content
         self.length = 1
+        self.lifespan = 1
 
         self._order = 1
         self.path = Queue()
+        
 
     def __str__(self):
         return '' + self._address + self.content 
 
     def create_path(self, path):
         '''
-        path is a list of router objects, ending in the target router
+        path is a list of router objects, ending in the target router.
+        packet lifespan grows as more routers are added.
         '''
         for router in path:
+            self.lifespan += 5
             self.path.enqueue(router)
 
     def next_router(self):
